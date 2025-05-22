@@ -5,7 +5,7 @@
  * @copyright (C) 2021 Unlimited Elements, All Rights Reserved.
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  * */
-defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 	class GlobalsUC{
 
@@ -260,11 +260,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			UniteFunctionsUC::validateNotEmpty(GlobalsUC::$url_assets_internal, "assets internal");
 
 			self::$isLocal = UniteFunctionsUC::isLocal();
-
-			self::initDBTableTitles();
-
-			//dmp("init globals");
-
+		
 			UniteProviderFunctionsUC::doAction(UniteCreatorFilters::ACTION_AFTER_INIT_GLOBALS);
 
 			if(self::$is_admin){
@@ -274,21 +270,6 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			}
 			
 		}
-
-		/**
-		 * init table titles
-		 */
-		private static function initDBTableTitles(){
-
-			$arrTitles = array();
-			$arrTitles[GlobalsUC::$table_addons] = esc_html__("Addon", "unlimited-elements-for-elementor");
-			$arrTitles[GlobalsUC::$table_categories] = esc_html__("Category", "unlimited-elements-for-elementor");
-			$arrTitles[GlobalsUC::$table_layouts] = esc_html__("Page", "unlimited-elements-for-elementor");
-
-			UniteCreatorDB::$arrTableTitles = $arrTitles;
-
-		}
-
 
 		/**
 		 * init after the includes done
@@ -318,6 +299,17 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		}
 		
 		/**
+		 * init after init action trigger
+		 */
+		public static function initAfterInitTrigger(){
+			
+			load_plugin_textdomain("unlimited-elements-for-elementor", false, GlobalsUC::$pathWPLanguages);
+
+			//init client text
+			ugelInitClientText();
+		}
+		
+		/**
 		 * init after plugins loaded
 		 */
 		public static function initAfterPluginsLoaded(){
@@ -333,8 +325,8 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			$showQueryDebugByUrl = HelperUC::hasPermissionsFromQuery("ucquerydebug");
 			if($showQueryDebugByUrl == true)
 				self::$showQueryDebugByUrl = true;
-
 			
+						
 			//test free version
 			
 			$isTestFree = HelperUC::hasPermissionsFromQuery("testfreeversion");

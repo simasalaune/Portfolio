@@ -4,7 +4,7 @@ use Elementor\Plugin;
 use Elementor\Core\Settings\Manager as SettingsManager;
 
 
-defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 class UniteCreatorElementorIntegrate{
@@ -627,6 +627,7 @@ class UniteCreatorElementorIntegrate{
 			
 			$this->renderBGOutput($elementID, $output);
 			
+			do_action("ue_render_background_addon", $objAddon);
 			
 		}catch(Exception $e){
 			//just skip

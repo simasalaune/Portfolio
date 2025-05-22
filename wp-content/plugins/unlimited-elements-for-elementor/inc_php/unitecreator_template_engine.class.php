@@ -5,7 +5,7 @@
  * @copyright (C) 2021 Unlimited Elements, All Rights Reserved.
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  * */
-defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 class UniteCreatorTemplateEngineWork{
@@ -726,7 +726,7 @@ class UniteCreatorTemplateEngineWork{
 
 		dmp("Params:");
 		dmp($this->arrParams);
-
+	
 		dmp("Items:");
 		dmp($this->arrItems);
 
@@ -1234,7 +1234,6 @@ class UniteCreatorTemplateEngineWork{
 	 * output various functionality
 	 */
 	public function ucfunc($type, $arg1 = null, $arg2= null, $arg3=null){
-
 		switch($type){
 			case "put_date_range":
 
@@ -1371,10 +1370,10 @@ class UniteCreatorTemplateEngineWork{
 				return($value);
 			break;
 			case "modify_text":
-
+				
 				$arg1 = HelperUC::$operations->modifyTextFromWidget($arg1);
 
-				return($arg1);
+			return($arg1);
 			break;
 			case "get_term_image":
 				
@@ -1682,18 +1681,27 @@ class UniteCreatorTemplateEngineWork{
 				return($arrData);
 			break;
 			case "get_max_price_filter_sync":
-				
 				$objFilters = new UniteCreatorFiltersProcess();
 				$priceRangeMaxValue = $objFilters->syncPriceRangeMaxValueWithGrid();
 
+
 				return($priceRangeMaxValue);
 			break;
+
+            case "get_breadcrumbs":
+            	
+                $objBreadcrumbs = new UniteCreatorBreadcrumbs();
+
+                $breadcrumbs = $objBreadcrumbs->getBreadcrumbItems($this->arrParams);
+
+                return $breadcrumbs;
+            break;
 			case "get_rss_keys":
 				
                 $objRSS = new UniteCreatorRSS();
-
+				
                 $arrData = $objRSS->getRssFeedKeys($this->addon, $this->arrParams);
-
+				
             return($arrData);
 			break;
 			case "get_url_from_string":
@@ -1734,7 +1742,16 @@ class UniteCreatorTemplateEngineWork{
 
 	}
 
-
+	/**
+	 * filter sanitize html
+	 */
+	public function filterSanitizeHtml($html){
+		
+		$html = UniteFunctionsUC::sanitize($html, UniteFunctionsUC::SANITIZE_HTML);
+		
+		return($html);
+	}
+	
 	/**
 	 * add extra functions to twig
 	 */
@@ -1744,6 +1761,8 @@ class UniteCreatorTemplateEngineWork{
 		$filterFilter = new Twig\TwigFilter("filter", array($this, "filter"), array("needs_environment" => true));
 		$filterMap = new Twig\TwigFilter("map", array($this, "map"), array("needs_environment" => true));
 		$filterSort = new Twig\TwigFilter("sort", array($this, "sort"), array("needs_environment" => true));
+		
+		$filterSafe = new Twig\TwigFilter("ucsafe", array($this, "filterSanitizeHtml"), array("is_safe" => array("html")));
 		
 		//add extra functions
 		$putItemsFunction = new Twig\TwigFunction('put_items', array($this,"putItems"));
@@ -1774,6 +1793,7 @@ class UniteCreatorTemplateEngineWork{
 		$getPostTags = new Twig\TwigFunction('getPostTags', array($this,"getPostTags"));
 		$getPostData = new Twig\TwigFunction('getPostData', array($this,"getPostData"));
 		$putPagination = new Twig\TwigFunction('putPagination', array($this,"putPagination"));
+
 
 		$putListingItemTemplate = new Twig\TwigFunction('putListingItemTemplate', array($this,"putListingItemTemplate"));
 		$putDynamicLoopTemplate = new Twig\TwigFunction('putDynamicLoopTemplate', array($this,"putDynamicLoopTemplate"));
@@ -1814,6 +1834,8 @@ class UniteCreatorTemplateEngineWork{
 		$this->twig->addFilter($filterFilter);
 		$this->twig->addFilter($filterMap);
 		$this->twig->addFilter($filterSort);
+		
+		$this->twig->addFilter($filterSafe);
 
 		//add extra functions
 		$this->twig->addFunction($putItemsFunction);
@@ -2047,7 +2069,7 @@ class UniteCreatorTemplateEngineWork{
 
 		if(empty($this->twig))
 			$this->initTwig();
-
+		
 		$params = $this->arrParams;
 
 		if($isInsideItems == true)
@@ -2066,5 +2088,6 @@ class UniteCreatorTemplateEngineWork{
 
 		$this->addon = $addon;
 	}
-
+	
+	
 }

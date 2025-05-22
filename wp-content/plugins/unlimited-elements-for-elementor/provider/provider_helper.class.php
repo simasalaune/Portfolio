@@ -663,12 +663,10 @@ class HelperProviderUC{
 			
 			if(!empty($mainKey))
 				dmp("Main key detected: <b>$mainKey</b>");
-			
-			$arrDataShow = UniteFunctionsUC::modifyDataArrayForShow($arrDataOriginal);
-			
+						
 			dmp("Original Data Found: ");
 			
-			HelperHtmlUC::putHtmlDataDebugBox($arrDataShow);
+			HelperHtmlUC::putHtmlDataDebugBox($arrDataOriginal);
 		}
 
 		if(is_array($arrData) == false){
@@ -894,9 +892,7 @@ class HelperProviderUC{
 		$numItems = count($arrRepeaterItems);
 		
 		dmp("Final Response: <b style='color:blue;'>$numItems</b> Repeater Items:");
-				
-		$arrRepeaterItems = UniteFunctionsUC::modifyDataArrayForShow($arrRepeaterItems);
-		
+						
 		HelperHtmlUC::putHtmlDataDebugBox($arrRepeaterItems);
 		
 	}
@@ -1290,11 +1286,17 @@ class HelperProviderUC{
 		GlobalsUC::initAfterPluginsLoaded();
 				
 		GlobalsUnlimitedElements::initAfterPluginsLoaded();
-		
-		load_plugin_textdomain("unlimited-elements-for-elementor", false, GlobalsUC::$pathWPLanguages);
-		
+						
 		UniteCreatorWooIntegrate::initActions();
-				
+	}
+	
+	/**
+	 * on init trigger
+	 */
+	public static function onInitTrigger(){
+
+		GlobalsUC::initAfterInitTrigger();
+		
 	}
 
 	/**
@@ -1360,7 +1362,8 @@ class HelperProviderUC{
 			add_filter("wp_php_error_message", array("HelperProviderUC", "onPHPErrorMessage"), 100, 2);
 		
 		add_action("plugins_loaded", array("HelperProviderUC", "onPluginsLoaded"));
-		
+		add_action("init", array("HelperProviderUC", "onInitTrigger"));
+				
 		//add_action("wp_loaded", array("HelperProviderUC", "onWPLoaded"));
 	}
 
@@ -1976,8 +1979,25 @@ class HelperProviderUC{
 		$post = get_post();
 		
 		HelperUC::$operations->putPostCustomFieldsDebug($post->ID);
+				
+	}
+	
+	/**
+	 * show current post meta debug
+	 */
+	public static function showCurrentPostTermsDebug(){
+		
+		$post = get_post();
+		
+		$arrTermsTitles = UniteFunctionsWPUC::getPostTermsTitles($post, true);
+		
+		$postTitle = $post->post_title;
+		
+		dmp("Post Terms for post <b>$postTitle</b>: ");
+		dmp($arrTermsTitles);
 		
 	}
+	
 	
 
 }

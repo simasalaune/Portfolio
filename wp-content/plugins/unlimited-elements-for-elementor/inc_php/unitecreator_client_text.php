@@ -5,8 +5,14 @@
  * @copyright (C) 2021 Unlimited Elements, All Rights Reserved.
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  * */
-defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
+if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * init client text
+ */
+function ugelInitClientText(){
+
+	
 GlobalsUC::$arrServerSideText = array(
 		"uncategorized"=>esc_html__("Uncategorized", "unlimited-elements-for-elementor"),
 		"all_addons"=>esc_html__("All Items", "unlimited-elements-for-elementor"),
@@ -173,3 +179,5 @@ $filepathProviderClientText = GlobalsUC::$pathProvider."provider_client_text.php
 
 if(file_exists($filepathProviderClientText))
 	require $filepathProviderClientText;
+	
+}

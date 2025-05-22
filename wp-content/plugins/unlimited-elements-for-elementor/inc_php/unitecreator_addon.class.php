@@ -5,7 +5,7 @@
  * @copyright (C) 2021 Unlimited Elements, All Rights Reserved.
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  * */
-defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class UniteCreatorAddonWork extends UniteElementsBaseUC{
 
@@ -718,7 +718,7 @@ class UniteCreatorAddonWork extends UniteElementsBaseUC{
 	 * get values that was set before
 	 */
 	public function getOriginalValues(){
-
+		
 		return($this->arrOriginalValues);
 	}
 
@@ -1890,6 +1890,42 @@ class UniteCreatorAddonWork extends UniteElementsBaseUC{
 		return(false);
 	}
 
+	/**
+	 * check if the addon's HTML is escaped
+	 */
+	public function isHTMLEscaped(){
+		
+		$arrParams = $this->getParams(UniteCreatorDialogParam::PARAM_TEXTFIELD);
+
+		if(empty($arrParams))
+			return(true);
+		
+		foreach($arrParams as $param) {
+			
+			$type = UniteFunctionsUC::getVal($param, "type");
+			
+			switch($type){
+				case UniteCreatorDialogParam::PARAM_CONTENT:
+				case UniteCreatorDialogParam::PARAM_TEXTAREA:
+				case UniteCreatorDialogParam::PARAM_TEXTFIELD:
+				break;
+				default:
+					continue(2);
+				break;
+			}
+			
+			$name = UniteFunctionsUC::getVal($param, "name");
+						
+			$html = UniteFunctionsUC::getVal($this->arrTemplates, "html");
+			
+			if( strpos($html, '{{' . $name . '|raw}}') !== false ) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
 
 	/**
 	 * check if this addon supports ajax
@@ -2435,7 +2471,7 @@ class UniteCreatorAddonWork extends UniteElementsBaseUC{
 			$processType = UniteCreatorParamsProcessor::PROCESS_TYPE_OUTPUT;
 
 		$arrParams = $this->objProcessor->getProcessedMainParamsValues($processType);
-
+		
 		return $arrParams;
 	}
 
@@ -2657,7 +2693,7 @@ class UniteCreatorAddonWork extends UniteElementsBaseUC{
 	 * set params values
 	 */
 	public function setParamsValues($arrValues){
-
+		
 		if(empty($arrValues))
 			$arrValues = array();
 

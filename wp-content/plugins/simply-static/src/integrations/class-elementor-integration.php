@@ -18,7 +18,7 @@ class Elementor_Integration extends Integration {
 	protected $extractor = null;
 
 	public function __construct() {
-		$this->name = __( 'Elementor', 'simply-static' );
+		$this->name        = __( 'Elementor', 'simply-static' );
 		$this->description = __( 'Exports assets required for Elementor widgets and prepares data used by them.', 'simply-static' );
 	}
 
@@ -142,6 +142,11 @@ class Elementor_Integration extends Integration {
 		$urls  = [];
 
 		foreach ( $files as $file ) {
+			// If file size is empty, skip it.
+			if ( ! filesize( $file ) ) {
+				continue;
+			}
+
 			$urls[] = str_replace( trailingslashit( ELEMENTOR_PATH ), trailingslashit( ELEMENTOR_URL ), $file );
 		}
 
@@ -190,6 +195,11 @@ class Elementor_Integration extends Integration {
 		$urls = [];
 
 		foreach ( $only_bundle_min as $minified_file ) {
+			// If file size is empty, skip it.
+			if ( ! filesize( $minified_file ) ) {
+				continue;
+			}
+
 			$urls[] = trailingslashit( ELEMENTOR_URL ) . 'assets/js/' . $minified_file;
 		}
 
@@ -202,12 +212,20 @@ class Elementor_Integration extends Integration {
 	 * @return void
 	 */
 	public function register_assets() {
-
 		$file_urls = [];
-		//$bundle_urls = $this->get_bundle_files();
-		$lib_urls = $this->get_lib_files();
-		//$file_urls   = array_merge( $file_urls, $bundle_urls );
-		$file_urls = array_merge( $file_urls, $lib_urls );
+		$lib_urls  = $this->get_lib_files();
+		$css_urls  = $this->get_files_in_dir( '/uploads/elementor/css/' );
+		$js_urls   = $this->get_files_in_dir( '/uploads/elementor/js/' );
+		$file_urls = array_merge( $file_urls, $lib_urls, $css_urls, $js_urls );
+
+		// Add bundle files?
+		$add_bundle = apply_filters( 'ss_elementor_add_bundle_files', false );
+
+		if ( $add_bundle ) {
+			$bundle_urls = $this->get_bundle_files();
+			$file_urls   = array_merge( $file_urls, $bundle_urls );
+		}
+
 		$file_urls = array_merge( $file_urls, $this->get_files_in_url( 'css' ) );
 		$file_urls = array_merge( $file_urls, $this->get_files_in_url( 'js' ) );
 		$file_urls = array_merge( $file_urls, $this->get_files_in_url( 'images' ) );

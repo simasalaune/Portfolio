@@ -5,12 +5,12 @@
  * @copyright (C) 2021 Unlimited Elements, All Rights Reserved.
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  * */
-defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class UniteCreatorMappickerView{
 
 	private $settings, $settingsOutput;
-	private $defaultAPIKey = "AIzaSyCFgj4Ipg5KSml6cMMHX4S50oRZ9_TIP34";
+	private $defaultAPIKey = "demokey";
 	private $apiKey = null;
 	private $arrLangs = array('[default]'=>"", 'English' => 'en', 'Arabic' => 'ar', 'Basque' => 'eu', 'Bengali' => 'bn', 'Bulgarian' => 'bg', 'Catalan' => 'ca', 'Chinese (Simplified)' => 'zh-CN', 'Chinese (Traditional)' => 'zh-TW', 'Croatian' => 'hr', 'Czech' => 'cs', 'Danish' => 'da', 'Dutch' => 'nl', 'English (Australian)' => 'en-AU', 'English (Great Britain)' => 'en-GB', 'Farsi' => 'fa', 'Filipino' => 'fil', 'Finnish' => 'fi', 'French' => 'fr', 'Galician' => 'gl', 'German' => 'de', 'Greek' => 'el', 'Gujarati' => 'gu', 'Hebrew' => 'iw', 'Hindi' => 'hi', 'Hungarian' => 'hu', 'Indonesian' => 'id', 'Italian' => 'it', 'Japanese' => 'ja', 'Kannada' => 'kn', 'Korean' => 'ko', 'Latvian' => 'lv', 'Lithuanian' => 'lt', 'Malayalam' => 'ml', 'Marathi' => 'mr', 'Norwegian' => 'no', 'Polish' => 'pl', 'Portuguese' => 'pt', 'Portuguese (Brazil)' => 'pt-BR', 'Portuguese (Portugal)' => 'pt-PT', 'Romanian' => 'ro', 'Russian' => 'ru', 'Serbian' => 'sr', 'Slovak' => 'sk', 'Slovenian' => 'sl', 'Spanish' => 'es', 'Swedish' => 'sv', 'Tagalog' => 'tl', 'Tamil' => 'ta', 'Telugu' => 'te', 'Thai' => 'th', 'Turkish' => 'tr', 'Ukrainian' => 'uk', 'Vietnamese' => 'vi');
 	private $urlScript, $urlGoogleScript, $mapData, $settingsData;

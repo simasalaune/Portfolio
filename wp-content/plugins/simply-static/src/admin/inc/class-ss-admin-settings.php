@@ -62,6 +62,7 @@ class Admin_Settings {
 			'simply-static-generate',
 			array( $this, 'render_settings' ),
 			SIMPLY_STATIC_URL . '/assets/simply-static-icon.svg',
+            apply_filters( 'ss_menu_position', 100 )
 		);
 
 		$generate_suffix = add_submenu_page(
@@ -367,6 +368,22 @@ class Admin_Settings {
 		register_rest_route( 'simplystatic/v1', '/cancel-export', array(
 			'methods'             => 'POST',
 			'callback'            => [ $this, 'cancel_export' ],
+			'permission_callback' => function () {
+				return current_user_can( apply_filters( 'ss_user_capability', 'publish_pages', 'generate' ) );
+			},
+		) );
+
+		register_rest_route( 'simplystatic/v1', '/pause-export', array(
+			'methods'             => 'POST',
+			'callback'            => [ $this, 'pause_export' ],
+			'permission_callback' => function () {
+				return current_user_can( apply_filters( 'ss_user_capability', 'publish_pages', 'generate' ) );
+			},
+		) );
+
+		register_rest_route( 'simplystatic/v1', '/resume-export', array(
+			'methods'             => 'POST',
+			'callback'            => [ $this, 'resume_export' ],
 			'permission_callback' => function () {
 				return current_user_can( apply_filters( 'ss_user_capability', 'publish_pages', 'generate' ) );
 			},
@@ -716,7 +733,7 @@ class Admin_Settings {
 	}
 
 	/**
-	 * Start Export
+	 * Cancel Export
 	 *
 	 * @return false|string
 	 */
@@ -741,7 +758,44 @@ class Admin_Settings {
 	public function is_running( $request ) {
 		return json_encode( [
 			'status'  => 200,
-			'running' => Plugin::instance()->get_archive_creation_job()->is_running()
+			'running' => Plugin::instance()->get_archive_creation_job()->is_running(),
+            'paused'  => Plugin::instance()->get_archive_creation_job()->is_paused(),
 		] );
+	}
+
+	/**
+	 * Pause Export
+	 *
+	 * @return false|string
+	 */
+	public function pause_export() {
+		Util::debug_log( "Received request to pause static archive generation" );
+		$blog_id = ! empty( $params['blog_id'] ) ? $params['blog_id'] : 0;
+
+		do_action( 'ss_before_perform_archive_action', $blog_id, 'pause', Plugin::instance()->get_archive_creation_job() );
+
+		Plugin::instance()->pause_static_export();
+
+		do_action( 'ss_after_perform_archive_action', $blog_id, 'pause', Plugin::instance()->get_archive_creation_job() );
+
+		return json_encode( [ 'status' => 200 ] );
+	}
+
+	/**
+	 * Resume Export
+	 *
+	 * @return false|string
+	 */
+	public function resume_export() {
+		Util::debug_log( "Received request to resume static archive generation" );
+		$blog_id = ! empty( $params['blog_id'] ) ? $params['blog_id'] : 0;
+
+		do_action( 'ss_before_perform_archive_action', $blog_id, 'resume', Plugin::instance()->get_archive_creation_job() );
+
+		Plugin::instance()->resume_static_export();
+
+		do_action( 'ss_after_perform_archive_action', $blog_id, 'resume', Plugin::instance()->get_archive_creation_job() );
+
+		return json_encode( [ 'status' => 200 ] );
 	}
 }

@@ -933,7 +933,155 @@ class UniteCreatorWooIntegrate{
 		
 		return($arrPostIDs);
 	}
+	
+	private function __________POST_QUERY_CLAUSES________(){}
+	
+	/**
+	 * modify post query clauses if needed
+	 */
+	public function checkModifyQueryClauses($args, $excludeOutofStockVariation, $showDebug){
+		
+		$orderby = UniteFunctionsUC::getVal($args, "orderby");
+		
+		//check orderby
+		
+		$orderby = UniteFunctionsWPUC::SORTBY_SALES;
+				
+		switch($orderby){
+			case UniteFunctionsWPUC::SORTBY_SALES:
+			case UniteFunctionsWPUC::SORTBY_RATING:
 
+				if($showDebug == true)
+					dmp("modify post query for orderby:".$orderby);
+
+				add_filter( 'posts_clauses', array( $this, 'modifyWCSortbyQuery' ), 10, 2 );
+
+			break;
+		}
+
+		//add out of stock variation filter
+		if($excludeOutofStockVariation == true){
+		
+			$termsArray = $this->getVariationTermsFromQueryArgs($args);
+			
+			//limit the number of terms to 2 
+			//for this functionality for the db request be less heavy
+			
+			if(!empty($termsArray) && GlobalsProviderUC::$isUnderAjax == true
+				&& count($termsArray) <= 2)
+				add_filter('posts_clauses', array($this,'excludeOutOfStockVariationProducts'), 10, 2);
+			
+		}
+	}
+
+
+	/**
+	 * exclude products where variations is out of stock status
+	 */
+	public function excludeOutOfStockVariationProducts($clauses, $query) {
+		
+		global $wpdb;
+
+		$termsArray = $this->getVariationTermsFromQueryArgs($query->query);
+		
+		$variationJoinConditions = array();
+
+		foreach ($termsArray as $index => $value) {
+			if (!empty($value['taxonomy']) && !empty($value['terms'])) {
+				$variationName = 'attribute_' . $value['taxonomy'];
+				$variationValue = $value['terms'][0];
+
+				$aliasVar = "pm_var_{$index}";
+				$variationJoinConditions[] = "INNER JOIN {$wpdb->postmeta} {$aliasVar} 
+                    ON p.ID = {$aliasVar}.post_id 
+                    AND {$aliasVar}.meta_key = '{$variationName}' 
+                    AND {$aliasVar}.meta_value = '{$variationValue}'";
+			}
+		}
+
+		if (!empty($variationJoinConditions)) {
+			$clauses['join'] .= "\n INNER JOIN {$wpdb->posts} p ON {$wpdb->posts}.ID = p.post_parent";
+			$clauses['join'] .= "\n INNER JOIN {$wpdb->postmeta} pm_stock 
+                ON p.ID = pm_stock.post_id 
+                AND pm_stock.meta_key = '_stock_status' 
+                AND pm_stock.meta_value = 'instock'";
+
+			$clauses['join'] .= "\n" . implode("\n", $variationJoinConditions);
+		}
+		
+		remove_filter('posts_clauses', array($this, 'excludeOutOfStockVariationProducts'), 10, 2);
+
+		return $clauses;
+	}
+
+
+	/**
+	 * before get posts
+	 */
+	public function modifyWCSortbyQuery($arrClauses){
+
+		if(empty(GlobalsProviderUC::$lastQueryArgs))
+			return($arrClauses);
+
+		$args = GlobalsProviderUC::$lastQueryArgs;
+
+		$postType = UniteFunctionsUC::getVal($args, "post_type");
+
+		if($postType != "product")
+			return($arrClauses);
+
+			
+		$isActive = self::isWooActive();
+
+		if($isActive == false)
+			return($arrClauses);
+
+		$orderBY = UniteFunctionsUC::getVal($args, "orderby");
+		$dir = UniteFunctionsUC::getVal($args, "order", "DESC");
+		
+		if(empty($orderBY))
+			return($arrClauses);
+
+		//add code filter by orderby
+
+		if(class_exists("WC_Query") == false)
+			return($arrClauses);
+
+		$objQuery = new WC_Query();
+
+		switch($orderBY){
+			case "price":
+
+				//if($dir == "DESC")
+					//$arrClauses = $objQuery->order_by_price_desc_post_clauses($arrClauses);
+				//else
+					//$arrClauses = $objQuery->order_by_price_asc_post_clauses($arrClauses);
+
+			break;
+			case 'sales':
+				$arrClauses = $objQuery->order_by_popularity_post_clauses($arrClauses);
+			break;
+			case 'rating':
+				$arrClauses = $objQuery->order_by_rating_post_clauses($arrClauses);
+
+				//change desc to ask
+
+				if($dir == "ASC"){
+					$orderby = UniteFunctionsUC::getVal($arrClauses, "orderby");
+					$orderby = str_replace("DESC", "ASC", $orderby);
+
+					$arrClauses["orderby"] = $orderby;
+				}
+
+			break;
+		}
+
+		remove_filter( 'posts_clauses', array( $this, 'modifyWCSortbyQuery' ), 10, 2 );
+
+		return($arrClauses);
+	}
+	
+	
 	private function __________STATIC_FUNCTIONS________(){}
 	
 	/**
@@ -1158,23 +1306,36 @@ class UniteCreatorWooIntegrate{
 	 * get variation terms from query args
 	 * todo: Finish this function
 	 */
-	public function getVariationTermsFromQueryQrgs($args){
-		
+	public function getVariationTermsFromQueryArgs($args){
+		// Get the post type from args
 		$postType = UniteFunctionsUC::getVal($args, "post_type");
-		
+
+		// Check if the post type is 'product', return empty array if not
 		if($postType != "product")
 			return(array());
-		
+
+		// Get the tax_query from args
 		$taxQuery = UniteFunctionsUC::getVal($args, "tax_query");
-		
+
 		if(empty($taxQuery))
 			return(array());
-		
-			
-		dmp("get terms array from terms query");
-		dmp($taxQuery);
-		exit();
-		
+
+		$variationTerms = array();
+
+		foreach($taxQuery as $query){
+			// Skip if the element is not an array or doesn't have 'taxonomy' key (e.g., 'relation')
+			if(!is_array($query) || !isset($query['taxonomy']))
+				continue;
+
+			// Check if the taxonomy is a product variation attribute (starts with "pa_")
+			if(strpos($query['taxonomy'], 'pa_') === 0){
+				// Add the query element to variation terms
+				$variationTerms[] = $query;
+			}
+		}
+
+		// Return the filtered variation terms
+		return $variationTerms;
 	}
 	
 	/**

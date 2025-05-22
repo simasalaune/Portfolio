@@ -50,8 +50,8 @@ class Fetch_Urls_Task extends Task {
 			'ss_static_pages',
 			Page::query()
 			    ->where( 'last_checked_at < ? OR last_checked_at IS NULL', $this->archive_start_time )
-			    ->limit( $batch_size )
-			    ->find(),
+				->limit( $batch_size )
+				->find(),
 			$this->archive_start_time
 		);
 
@@ -69,6 +69,7 @@ class Fetch_Urls_Task extends Task {
 		Util::debug_log( "Total pages: " . $total_pages . '; Pages remaining: ' . $pages_remaining );
 
 		while ( $static_page = array_shift( $static_pages ) ) {
+			$this->check_if_running();
 			Util::debug_log( "URL: " . $static_page->url );
 			$this->save_pages_status( count( $static_pages ) + 1, intval( $total_pages ) );
 
@@ -278,11 +279,16 @@ class Fetch_Urls_Task extends Task {
 	 * @return bool
 	 */
 	public function find_excludable( $static_page ) {
-		$excluded = apply_filters( 'ss_excluded_by_default', array( 'wp-json', '.php', 'debug' ) );
+		$excluded = array( '.php', 'debug' );
 
 		// Exclude feeds if add_feeds is not true.
 		if ( ! $this->options->get( 'add_feeds' ) ) {
 			$excluded[] = 'feed';
+		}
+
+		// Exclude Rest API if add_rest_api is not true.
+		if ( ! $this->options->get( 'add_rest_api' ) ) {
+			$excluded[] = 'wp-json';
 		}
 
 		if ( ! empty( $this->options->get( 'urls_to_exclude' ) ) ) {
@@ -292,6 +298,12 @@ class Fetch_Urls_Task extends Task {
 				$excluded = array_merge( $excluded, $excluded_by_option );
 			}
 		}
+
+		if ( apply_filters( 'simply_static_exclude_temp_dir', true ) ) {
+			$excluded[] = Util::get_temp_dir_url();
+		}
+
+		$excluded = apply_filters( 'ss_excluded_by_default', $excluded );
 
 		if ( $excluded ) {
 			$excluded = array_filter( $excluded );

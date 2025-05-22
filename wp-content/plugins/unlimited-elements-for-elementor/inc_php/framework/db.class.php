@@ -5,7 +5,7 @@
  * @copyright (C) 2021 Unlimited Elements, All Rights Reserved. 
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  * */
-defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 	
 	class UniteCreatorDB{
@@ -489,6 +489,23 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			
 			return($rows);
 		}
+
+		/**
+		 * init table titles
+		 */
+		private function initDBTableTitles(){
+			
+			if(!empty(self::$arrTableTitles))
+				return(false);
+			
+			$arrTitles = array();
+			$arrTitles[GlobalsUC::$table_addons] = esc_html__("Addon", "unlimited-elements-for-elementor");
+			$arrTitles[GlobalsUC::$table_categories] = esc_html__("Category", "unlimited-elements-for-elementor");
+			$arrTitles[GlobalsUC::$table_layouts] = esc_html__("Page", "unlimited-elements-for-elementor");
+
+			self::$arrTableTitles = $arrTitles;
+
+		}
 		
 		
 		/**
@@ -511,6 +528,9 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			}
 			
 			if(empty($errorEmpty)){
+				
+				$this->initDBTableTitles();
+				
 				$tableTitle = UniteFunctionsUC::getVal(self::$arrTableTitles, $tableName, __("Record", "unlimited-elements-for-elementor"));
 				
 				$errorEmpty = $tableTitle." ".__("not found", "unlimited-elements-for-elementor");

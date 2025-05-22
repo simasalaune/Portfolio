@@ -135,8 +135,9 @@ class UniteCreatorElementorPagination{
 
 
 			);
-
-
+			
+			$arrAjaxSettings = apply_filters("ue_modify_post_grid_ajax_settings", $arrAjaxSettings, $paramName);
+			
 			$arrSettings = array_merge($arrSettings, $arrAjaxSettings);
 		}
 
@@ -515,6 +516,10 @@ class UniteCreatorElementorPagination{
 		if($isDebug == true){
 			dmp("pagination query:");
 			dmp(GlobalsProviderUC::$lastPostQuery->query);
+			
+			$totalPosts = GlobalsProviderUC::$lastPostQuery->found_posts;
+			
+			dmp("Total Posts: $totalPosts");
 		}
 
 		global $wp_rewrite;

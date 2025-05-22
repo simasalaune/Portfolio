@@ -7,7 +7,7 @@
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class UniteFunctionsUC{
 
@@ -15,7 +15,14 @@ class UniteFunctionsUC{
 	const SANITIZE_TEXT_FIELD = "sanitize_text_field";
 	const SANITIZE_KEY = "sanitize_key";
 	const SANITIZE_NOTHING = "sanitize_nothing";
-
+	const SANITIZE_YOUTUBE = "sanitize_youtube";
+	const SANITIZE_VIMEO = "sanitize_vimeo";
+	const SANITIZE_WISTIA = "sanitize_wistia";
+	const SANITIZE_URL = "sanitize_url";
+	const SANITIZE_ATTR = "sanitize_attr";
+	const SANITIZE_HTML = "sanitize_html";
+	
+	
 	private static $serial = 0;
 	private static $arrCache = array();
 
@@ -27,7 +34,7 @@ class UniteFunctionsUC{
 		if($code === null)
 			$code = 0;
 		
-		throw new Exception(esc_attr($message), (int)$code);
+		throw new Exception($message, (int)$code);
 	}
 
 	/**
@@ -1288,16 +1295,17 @@ class UniteFunctionsUC{
 		return($arrOutput);
 	}
 
-
+	
 	/**
 	 * sanitize attribute
 	 */
 	public static function sanitizeAttr($strAttr){
-
-		$strAttr = htmlspecialchars($strAttr);
-
+		
+		$strAttr = esc_attr($strAttr);
+		
 		return($strAttr);
 	}
+	
 
 	/**
 	 * get sanitize types array
@@ -1398,10 +1406,17 @@ class UniteFunctionsUC{
     /**
      * parse xml string - convert to array
      */
-    public static function parseXML($xml) {
-        $array = [];
+    public static function parseXML($xml){
+            	
+    	$array = array();
+    	
+    	if(empty($xml))
+    		return($array);
+    	
+    	$arrNamespaces = $xml->getNamespaces(true);
+    	
         // Process namespaces and children
-        foreach ($xml->getNamespaces(true) as $prefix => $namespace) {
+        foreach ($arrNamespaces as $prefix => $namespace) {
             foreach ($xml->children($namespace) as $key => $child) {
 
                 if (!empty($prefix) && !empty($key)) {
@@ -1850,12 +1865,12 @@ class UniteFunctionsUC{
 
 		if(is_string($str) == false)
 			return($str);
-
+		
 		//not allowed html tags
 
 		if($str != wp_strip_all_tags($str))
 			return($str);
-
+		
 		//try to csv decode
 
 		$arrLines = explode("\n", $str);
@@ -1866,20 +1881,33 @@ class UniteFunctionsUC{
 		$arrKeys = array();
 
 		$arrItems = array();
-
+		
+		$delimiter = null;
+		
 		foreach($arrLines as $line){
 
 			$line = trim($line);
 
 			if(empty($line))
 				continue;
-
-			$arrLine = str_getcsv($line);
+			
+			//set delimiter
+			if(empty($delimiter)) {
+				
+				$delimiter = ",";
+				
+				if(strpos($line, ';') !== false){
+				    $commaCount = substr_count($line, ',');
+				    $semicolonCount = substr_count($line, ';');
+				    $delimiter = ($commaCount >= $semicolonCount) ? ',' : ';';
+				}
+			}
+			
+			$arrLine = str_getcsv($line, $delimiter);
 
 			if(empty($arrLine))
 				continue;
-
-
+			
 			//get the keys
 			if(empty($arrKeys)){
 				$arrKeys = $arrLine;
@@ -1887,15 +1915,13 @@ class UniteFunctionsUC{
 				continue;
 			}
 
-			//get the item
-
-			if(count($arrLine) != count($arrKeys))
-				continue;
-
+			//if not equal - add to the line empty sells to the end
+			if (count($arrLine) != count($arrKeys))
+				$arrLine = array_pad($arrLine, count($arrKeys), "");
+			
 			//create the item
-
 			$item = array();
-
+			
 			foreach($arrKeys as $index=>$key){
 
 				$value = $arrLine[$index];
@@ -2025,11 +2051,15 @@ class UniteFunctionsUC{
      * decode content given from xml
      */
     public static function xmlDecode($content, $outputArray = false){
-
+		
         if($outputArray == true && empty($content))
             return(array());
 
         $xml = @simplexml_load_string($content, "SimpleXMLElement", LIBXML_NOCDATA);
+        
+        if(empty($xml))
+        	return(array());
+        
         $arrXml = self::parseXML($xml);
         $arr = json_decode(json_encode($arrXml), true);
 		
@@ -2170,7 +2200,26 @@ class UniteFunctionsUC{
 		return($arrLinks);
 	}
 
+	/**
+	 * do url decode
+	 */
+	public static function hexEntityDecode($matches) {
+	    return chr(hexdec($matches[1]));
+	}
 
+	/**
+	 * decode the url
+	 */
+	public static function urlDecode($url) {
+		
+	    $decoded = urldecode($url);
+	    
+	    $decoded = preg_replace_callback('/&#x([a-fA-F0-9]+);/i', array("UniteFunctionsUC","hexEntityDecode"), $decoded);
+		
+	    return trim($decoded);
+	}	
+	
+	
 	public static function z___________VALIDATIONS_________(){}
 
 	/**
@@ -2182,7 +2231,7 @@ class UniteFunctionsUC{
 			UniteFunctionsUC::throwError("Object: $objectName don't have method $strMethod");
 
 	}
-
+	
 
 	/**
 	 * validate that the value is in array
@@ -2262,8 +2311,9 @@ class UniteFunctionsUC{
 	 * validate that some value is numeric
 	 */
 	public static function validateNumeric($val,$fieldName=""){
+		
 		self::validateNotEmpty($val,$fieldName);
-
+		
 		if(empty($fieldName))
 			$fieldName = "Field";
 
@@ -2524,8 +2574,182 @@ class UniteFunctionsUC{
 			return $arrErrors;
 	}
 
+	public static function z________SANITIZE________(){}
+	
+	/**
+	 * sanitize some string
+	 */
+	public static function sanitize($str, $type){
+		
+		$showDebug = false;
+		
+		if($showDebug == true)
+			dmp("sanitize ($type): $str");
+		
+		switch($type){
+			case self::SANITIZE_ID:
+			case self::SANITIZE_KEY:
+			case self::SANITIZE_TEXT_FIELD:
+			case self::SANITIZE_NOTHING:
+				$str = UniteProviderFunctionsUC::sanitizeVar($str, $type);
+			break;
+			case self::SANITIZE_YOUTUBE:
+				$str = self::getYoutubeVideoID($str);
+			break;
+			case self::SANITIZE_VIMEO:
+				$str = self::getVimeoIDFromUrl($str);
+			break;
+			case self::SANITIZE_WISTIA:
+				$str = self::getWistiaIDFromUrl($str);
+			break;
+			case self::SANITIZE_URL:
+				$str = self::sanitizeSecuredUrl($str);
+			break;
+			case self::SANITIZE_ATTR:
+				$str = self::sanitizeSecuredAttribute($str);
+			break;
+			case self::SANITIZE_HTML:
+				$str = self::sanitizeHTMLRemoveJS($str);
+			break;
+			default:
+				self::throwError("Sanitize string error: wrong type: $type");
+			break;
+		}
+		
+		if($showDebug == true)
+			dmp("sanitize output: $str");
+		
+		return($str);
+	}
 
+	/**
+	* check if exist XSS code in the content
+	* use it for attribute only
+	*/
+    public static function isAttributeContainsXSS($content) {
+    	
+    	if(empty($content))
+    		return(false);
+    		
+    	if(is_string($content) == false)
+    		return(false);
+		
+    	if(strlen($content) < 20)
+    		return(false);
+    		
+    	$decodedContent = html_entity_decode($content, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+		
+        $xssPatterns = array(
+            '/javas\s*cript:/i', // Obfuscated JavaScript URI
+            '/<\s*script/i',     // Script tag
+            '/<\s*iframe/i',     // Iframe tag
+            '/<\s*img[^>]*onerror\s*=/i', // Image with onerror handler
+            '/on\w+\s*=\s*["\'`]?[^"\']*(alert|prompt|confirm|eval|window\.location|document\.cookie)/i', // Event handlers
+            '/eval\s*\(/i',      // eval() calls
+            '/data:\s*text\/html/i', // Dangerous data URI
+            '/autofocus\s*=/i',  // Autofocus attribute
+            '/<\s*meta\s+http-equiv\s*=\s*["\']?refresh/i' // Meta refresh
+        );
+		
+        // Check both original and decoded content
+        foreach ($xssPatterns as $pattern) {
+            if (preg_match($pattern, $content) || preg_match($pattern, $decodedContent)) {
+                return true; // XSS detected
+            }
+        }
+		
+        return false;
+    }
+	
+    
+    /**
+     * remove all JS from HTML output
+     */
+	public static function sanitizeHTMLRemoveJS($html) {
+		
+	    // Remove <script> tags completely
+        $html = preg_replace('#<script[^>]*?>.*?</script>#is', '', $html);
 
+        // Remove all event handlers that start with 'javascript:'
+        $html = preg_replace('/\s*on\w+\s*=\s*["\']?\s*javascript\s*:[^"\'>]*["\']?/i', '', $html);
+
+		// Remove all event handlers, even if malformed (e.g., <iframe/onload=...>)
+        $html = preg_replace('/\s*\/?on\w+\s*=\s*["\']?[^"\'>]*["\']?/i', '', $html);
+        
+        // Remove javascript: URLs in href/src/xlink:href/etc.
+        $html = preg_replace('/\s*(href|src|xlink:href)\s*=\s*["\']?\s*javascript\s*:[^"\'>]*["\']?/i', '', $html);
+
+        // Remove potentially harmful attributes
+        $html = preg_replace('/\s*(autofocus|formaction|fscommand|seekSegmentTime|xmlns)\s*=\s*["\'][^"\']*["\']?/i', '', $html);
+        
+        return trim($html);		
+	}
+
+	
+	/*
+     * sanitize secured string
+     */
+    public static function sanitizeSecuredAttribute($str){
+    	
+    	if(empty($str))
+    		return($str);
+    	
+    	$isContains = self::isAttributeContainsXSS($str);
+    	
+    	if($isContains == true)
+    		return("");
+    	
+    	$str = esc_attr($str);
+    		
+    	return($str);
+    }
+	
+    
+	/**
+	 * sanitize color string
+	 */
+	public static function sanitizeColorString($color){
+
+		if(self::isEmptyColorString($color) == true)
+			return("");
+
+		return($color);
+	}
+	
+	
+	/**
+	 * Sanitizes a URL by detecting malicious payloads.
+	 * Returns an empty string if the URL contains potential threats.
+	 */
+	public static function sanitizeSecuredUrl($url) {
+		
+		if(empty($url))
+			return($url);
+	    			
+	    // Trim and decode the URL for better detection
+	    $decodedUrl = self::urlDecode($url);
+	    
+	    $patterns = array(
+	        '/javascript:/i',         // Prevents JavaScript execution
+	        '/data:/i',               // Prevents data URI schemes
+	        '/vbscript:/i',           // Prevents VBScript execution
+	        '/expression\(/i',        // Prevents CSS expressions
+			'/(\bon\w+\s*=\s*["\']?.*["\']?)/i', // Detects inline event handlers (onClick, onError, etc.)
+	        '/<\/?(script|iframe|object|embed|svg|form|link|meta)[^>]*>/i', // Prevents script tags and dangerous elements
+	        '/\b(eval|alert|prompt|confirm|print)\s*\(/i', // Detects dangerous functions
+	        '/["\']\s*;\s*(?:base64|window|document|location)/i', // Prevents common injection attempts
+	        '/[\x00-\x1F\x7F]/',      // Detects control characters
+	    );
+		
+	    foreach ($patterns as $pattern) {
+	        if (preg_match($pattern, $decodedUrl)) {
+	            return ""; // Return empty string if a threat is found
+	        }
+	    }
+	
+	    return esc_url($url);
+	}	
+	
 	public static function z________FILE_SYSTEM________(){}
 
 
@@ -3489,49 +3713,71 @@ class UniteFunctionsUC{
 	 * get youtube video id from url, or ID
 	 */
 	public static function getYoutubeVideoID($url){
-
-		preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user|shorts)\/))([^\?&\"'>]+)/", $url, $matches);
-
-		if(empty($matches))
-			return($url);
-
-		if(count($matches) < 1)
-			return("");
-
-		$videoID = $matches[1];
-
-		return($videoID);
+		
+	 	// If input is already a valid YouTube ID, return it
+	    if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $url)) {
+	        return $url;
+	    }
+	
+	    // Match YouTube video ID from URL
+	    preg_match('/^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|(?:embed|v|vi|user|shorts)\/))([a-zA-Z0-9_-]{11})/', $url, $matches);
+	
+	    // Return empty string if no valid ID is found
+	    if (empty($matches[1])) {
+	        return "";
+	    }
+	
+	    $videoID = $matches[1];
+		
+	    // Validate extracted ID (YouTube video IDs are exactly 11 characters long)
+	    return preg_match('/^[a-zA-Z0-9_-]{11}$/', $videoID) ? $videoID : "";
 	}
 
 	/**
-	 * get vimeo id from url
+	 * Get Vimeo video ID from URL or raw ID.
+	 * Returns empty string if the input is invalid.
 	 */
-	public static function getVimeoIDFromUrl($url){
-
-
-		if(is_numeric($url))
-			return($url);
-
-		if(strpos($url, "https://") === false)
-			$url = "https://".$url;
-
-				preg_match('%^https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)(?:[?]?.*)$%im', $url, $matches);
-
-				if(empty($matches))
-					return($url);
-
-				if(count($matches) < 4)
-					return($url);
-
-				$videoID = $matches[3];
-
-				if(is_numeric($videoID) == false)
-					return($url);
-
-
-				return($videoID);
+	public static function getVimeoIDFromUrl($url) {
+	    
+	    // If input is already a numeric Vimeo ID, return it
+	    if (is_numeric($url)) {
+	        return $url;
+	    }
+	
+	    // Ensure URL is properly formatted
+	    if (strpos($url, "https://") === false && strpos($url, "http://") === false) {
+	        $url = "https://" . $url;
+	    }
+	
+	    // Match Vimeo video ID from URL
+	    preg_match('/(?:https?:\/\/)?(?:www\.|player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/i', $url, $matches);
+		
+	    // Return empty string if no valid ID is found
+	    if (empty($matches[3])) {
+	        return "";
+	    }
+	
+	    $videoID = $matches[3];
+	
+	    // Validate extracted ID (must be numeric)
+	    return is_numeric($videoID) ? $videoID : "";	
 	}
 
+	/**
+	 * get wistia id from url
+	 */
+	public static function getWistiaIDFromUrl($input){
+		
+	    // If it's a full Wistia URL, extract the ID using regex
+	    if (preg_match('/(?:https?:\/\/)?(?:[^\/]+\.)?wistia\.com\/(?:medias|embed\/iframe)\/([a-zA-Z0-9_-]+)/', $input, $matches)) {
+	        $input = $matches[1];
+	    }
+	
+	    // Ensure the ID contains only valid characters (alphanumeric, underscore, or dash)
+	    return preg_match('/^[a-zA-Z0-9_-]+$/', $input) ? $input : '';
+	}
+	
+	
 	/**
 	 * encode svg to bg image url
 	 */
@@ -3789,16 +4035,6 @@ class UniteFunctionsUC{
 		return(false);
 	}
 
-	/**
-	 * sanitize color string
-	 */
-	public static function sanitizeColorString($color){
-
-		if(self::isEmptyColorString($color) == true)
-			return("");
-
-		return($color);
-	}
 
 	/**
 	 * convert colors to rgb
