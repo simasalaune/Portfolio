@@ -95,7 +95,7 @@ class Url_Extractor {
 
 		'meta' => array( 'content' ),
 		'link' => array( 'href' ),
-		'atom' => array( 'href' )
+		'atom' => array( 'href' ),
 	);
 
 	// /** @const */
@@ -197,17 +197,24 @@ class Url_Extractor {
 			$this->save_body( $this->extract_and_replace_urls_in_css( $this->get_body() ) );
 		}
 
-		if ( $this->static_page->is_type( 'xml' ) ) {
+		if ( $this->static_page->is_type( 'xml' ) || $this->static_page->is_type( 'xsl' ) ) {
 			$this->save_body( $this->extract_and_replace_urls_in_xml() );
 		}
 
 		if ( $this->static_page->is_type( 'json' ) ) {
-			$this->save_body( $this->extract_and_replace_urls_in_json() );
+			// Check if the URL includes 'simply-static/configs'
+			if ( strpos( $this->static_page->file_path, 'simply-static/configs' ) === false ) {
+				// Proceed to replace the URL.
+				$this->save_body( $this->extract_and_replace_urls_in_json() );
+			}
 		}
 
 		if ( $this->static_page->is_type( 'html' ) || $this->static_page->is_type( 'css' ) || $this->static_page->is_type( 'xml' ) || $this->static_page->is_type( 'json' ) ) {
-			// Replace encoded URLs.
-			$this->replace_encoded_urls();
+			// Check if the URL includes 'simply-static/configs'
+			if ( strpos( $this->static_page->file_path, 'simply-static/configs' ) === false ) {
+				// Replace encoded URLs.
+				$this->replace_encoded_urls();
+			}
 
 			// If activated forced string/replace for URLs.
 			if ( $this->options->get( 'force_replace_url' ) && ( ! $this->options->get( 'use_forms' ) && ! $this->options->get( 'use_comments' ) ) ) {
@@ -248,6 +255,26 @@ class Url_Extractor {
 	}
 
 	/**
+	 * Force Replace the origin URL from the content with the destination URL.
+	 *
+	 * @param string $content Content.
+	 *
+	 * @return array|string|string[]
+	 */
+	public function force_replace( $content ) {
+		$destination_url = $this->options->get_destination_url();
+
+		// replace any instance of the origin url, whether it starts with https://, http://, or //.
+		$content = preg_replace( '/(https?:)?\/\/' . addcslashes( Util::origin_host(), '/' ) . '/i', $destination_url, $content );
+
+		// replace wp_json_encode'd urls, as used by WP's `concatemoji`.
+		// e.g. {"concatemoji":"http:\/\/www.example.org\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.6.1"}.
+		$content = str_replace( addcslashes( Util::origin_url(), '/' ), addcslashes( $destination_url, '/' ), $content );
+
+		return $content;
+	}
+
+	/**
 	 * Replaces origin URL with destination URL in response body
 	 *
 	 * This is a function of last resort for URL replacement. Ideally it was
@@ -271,16 +298,8 @@ class Url_Extractor {
 		even more ideally, we'd only have a single preg_replace.
 		 */
 
-		$destination_url = $this->options->get_destination_url();
-		$response_body   = $this->get_body();
-
-		// replace any instance of the origin url, whether it starts with https://, http://, or //.
-		$response_body = preg_replace( '/(https?:)?\/\/' . addcslashes( Util::origin_host(), '/' ) . '/i', $destination_url, $response_body );
-
-		// replace wp_json_encode'd urls, as used by WP's `concatemoji`.
-		// e.g. {"concatemoji":"http:\/\/www.example.org\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.6.1"}.
-		$response_body = str_replace( addcslashes( Util::origin_url(), '/' ), addcslashes( $destination_url, '/' ), $response_body );
-
+		$response_body = $this->get_body();
+		$response_body = $this->force_replace( $response_body );
 		$response_body = apply_filters( 'simply_static_force_replaced_urls_body', $response_body, $this->static_page );
 
 		$this->save_body( $response_body );
@@ -575,9 +594,9 @@ class Url_Extractor {
 	 */
 	private function extract_and_replace_urls_in_xml() {
 		$xml_string = $this->get_body();
-		// match anything starting with http/s plus all following characters
+		// match anything starting with http/s or // plus all following characters
 		// except: [space] " ' <
-		$pattern = "/https?:\/\/[^\s\"'<]+/";
+		$pattern = '/(?:https?:)?\/\/[^\s"\'\<\>]+/';
 		$text    = preg_replace_callback( $pattern, array( $this, 'xml_matches' ), $xml_string );
 
 		return $text;
@@ -589,10 +608,12 @@ class Url_Extractor {
 	 */
 	private function extract_and_replace_urls_in_json() {
 		$json_string = $this->get_body();
-		// match anything starting with http/s plus all following characters
+		// match anything starting with http/s or // plus all following characters
 		// except: [space] " ' <
-		$pattern = "/https?:\/\/[^\s\"'<]+/";
-		$text    = preg_replace_callback( $pattern, array( $this, 'json_matches' ), $json_string );
+		$pattern = '/(?:https?:)?\/\/[^\s"\'\<\>]+/';
+
+
+		$text = preg_replace_callback( $pattern, array( $this, 'json_matches' ), $json_string );
 
 		return $text;
 	}
