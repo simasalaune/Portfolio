@@ -299,14 +299,14 @@ html {
 .loader_round {
 	width: 16px;
 	height: 16px;
-	background-image: url("https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/images/loader.gif");
+	background-image: url("../images/loader.gif");
 	background-repeat: no-repeat;
 	padding-left: 20px;
 	display: inline-block;
 }
 .loader_text {
 	min_height: 16px;
-	background-image: url("https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/images/loader.gif");
+	background-image: url("../images/loader.gif");
 	background-repeat: no-repeat;
 	padding-left: 22px;
 }
@@ -880,7 +880,7 @@ ul.unite-context-menu li a:focus {
 .unite-dialog-loader {
 	margin-top: 5px;
 	min-height: 16px;
-	background-image: url("https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/images/loader.gif");
+	background-image: url("../images/loader.gif");
 	background-repeat: no-repeat;
 	padding-left: 22px;
 }
@@ -2759,7 +2759,7 @@ table.unite_table_settings_wide .setting_onecell_text {
 }
 
 .uc-mappicker-overlay-trans{
-	background-image:url("https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/images/trans_tile.png");
+	background-image:url("../images/trans_tile.png");
 }
 
 .uc-mappicker-overlay-text{

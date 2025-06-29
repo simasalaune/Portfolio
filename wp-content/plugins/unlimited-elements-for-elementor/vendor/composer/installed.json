@@ -50,7 +50,7 @@
                 }
             ],
             "description": "A generic function and convention to trigger deprecation notices",
-            "homepage": "https://symfony.com/",
+            "homepage": "https://symfony.com",
             "support": {
                 "source": "https://github.com/symfony/deprecation-contracts/tree/v2.5.4"
             },
@@ -126,7 +126,7 @@
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
-            "homepage": "https://symfony.com/",
+            "homepage": "https://symfony.com",
             "keywords": [
                 "compatibility",
                 "ctype",
@@ -208,7 +208,7 @@
                 }
             ],
             "description": "Symfony polyfill for the Mbstring extension",
-            "homepage": "https://symfony.com/",
+            "homepage": "https://symfony.com",
             "keywords": [
                 "compatibility",
                 "mbstring",
@@ -292,7 +292,7 @@
                 }
             ],
             "description": "Symfony polyfill backporting some PHP 8.0+ features to lower PHP versions",
-            "homepage": "https://symfony.com/",
+            "homepage": "https://symfony.com",
             "keywords": [
                 "compatibility",
                 "polyfill",
@@ -371,7 +371,7 @@
                 }
             ],
             "description": "Symfony polyfill backporting some PHP 8.1+ features to lower PHP versions",
-            "homepage": "https://symfony.com/",
+            "homepage": "https://symfony.com",
             "keywords": [
                 "compatibility",
                 "polyfill",
@@ -446,7 +446,7 @@
                 {
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org/",
+                    "homepage": "http://fabien.potencier.org",
                     "role": "Lead Developer"
                 },
                 {
@@ -460,7 +460,7 @@
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",
-            "homepage": "https://twig.symfony.com/",
+            "homepage": "https://twig.symfony.com",
             "keywords": [
                 "templating"
             ],

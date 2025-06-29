@@ -3,14 +3,14 @@
     "type": "library",
     "description": "A Twig extension for Symfony Cache",
     "keywords": ["twig", "html", "cache"],
-    "homepage": "https://twig.symfony.com/",
+    "homepage": "https://twig.symfony.com",
     "license": "MIT",
     "minimum-stability": "dev",
     "authors": [
         {
             "name": "Fabien Potencier",
             "email": "fabien@symfony.com",
-            "homepage": "http://fabien.potencier.org/",
+            "homepage": "http://fabien.potencier.org",
             "role": "Lead Developer"
         }
     ],

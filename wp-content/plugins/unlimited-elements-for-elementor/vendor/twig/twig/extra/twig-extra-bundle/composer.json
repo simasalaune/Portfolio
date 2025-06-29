@@ -3,14 +3,14 @@
     "type": "symfony-bundle",
     "description": "A Symfony bundle for extra Twig extensions",
     "keywords": ["twig", "extra", "bundle"],
-    "homepage": "https://twig.symfony.com/",
+    "homepage": "https://twig.symfony.com",
     "license": "MIT",
     "minimum-stability": "dev",
     "authors": [
         {
             "name": "Fabien Potencier",
             "email": "fabien@symfony.com",
-            "homepage": "http://fabien.potencier.org/",
+            "homepage": "http://fabien.potencier.org",
             "role": "Lead Developer"
         }
     ],

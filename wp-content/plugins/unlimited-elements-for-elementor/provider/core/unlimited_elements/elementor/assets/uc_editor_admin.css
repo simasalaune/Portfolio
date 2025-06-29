@@ -23,7 +23,7 @@
 /* --- icons --- */
 
 .elementor-panel .uc-default-widget-icon::after{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/provider/core/unlimited_elements/elementor/images/widget-icon.svg');
+	background-image:url('../images/widget-icon.svg');
 }
 
 .elementor-panel .ue-widget-icon{
@@ -34,7 +34,7 @@
 
 .elementor-panel .ue-widget-icon::after{
 	xcontent:"UE";
-	content:url(https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/provider/core/unlimited_elements/elementor/images/logo-mini.svg);
+	content:url(../images/logo-mini.svg);
 	opacity:0.5;
 	position:absolute;
 	top:4px;
@@ -51,7 +51,7 @@
 
 .elementor-panel .ue-widget-icon.ue-dark-mode::after{
 	filter: brightness(4) invert(100%);	
-	content:url(https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/provider/core/unlimited_elements/elementor/images/logo-mini-dark.svg);	
+	content:url(../images/logo-mini-dark.svg);	
 }
 
 
@@ -108,7 +108,7 @@
 
 .elementor-panel .uc-panel-ajax-loader{
 	display:inline-block;
-	background-image:url(https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/provider/core/unlimited_elements/elementor/images/loader.gif);
+	background-image:url(../images/loader.gif);
 	background-repeat:no-repeat;
 	background-position:left center;
 	padding-left:22px;

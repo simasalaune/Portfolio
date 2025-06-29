@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Symfony polyfill for ctype functions",
     "keywords": ["polyfill", "compatibility", "portable", "ctype"],
-    "homepage": "https://symfony.com/",
+    "homepage": "https://symfony.com",
     "license": "MIT",
     "authors": [
         {

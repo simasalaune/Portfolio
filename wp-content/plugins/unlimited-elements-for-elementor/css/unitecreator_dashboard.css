@@ -182,7 +182,7 @@
 	display: block;
 	width: 36px;
 	height: 36px;
-	background: url("https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/images/dashboard/icon-play-white.svg") no-repeat;
+	background: url("../images/dashboard/icon-play-white.svg") no-repeat;
 	background-size: contain;
 }
 
@@ -259,7 +259,7 @@ img.ue-illustration {
 	display: block;
 	width: 16px;
 	height: 16px;
-	background: url("https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/images/dashboard/icon-check-primary.svg") no-repeat;
+	background: url("../images/dashboard/icon-check-primary.svg") no-repeat;
 	background-size: contain;
 }
 
@@ -275,7 +275,7 @@ img.ue-illustration {
 .ue-get-pro-cta {
 	position: relative;
 	background-color: #000000;
-	background-image: url("https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/images/dashboard/cta-bg.webp");
+	background-image: url("../images/dashboard/cta-bg.webp");
 	background-size: contain;
 	background-position: bottom right;
 	background-repeat: no-repeat;
@@ -364,7 +364,7 @@ img.ue-illustration {
 	display: block;
 	width: 16px;
 	height: 16px;
-	background: url("https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/images/dashboard/icon-check-white.svg") no-repeat;
+	background: url("../images/dashboard/icon-check-white.svg") no-repeat;
 	background-size: contain;
 }
 

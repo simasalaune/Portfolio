@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Symfony polyfill for intl's grapheme_* functions",
     "keywords": ["polyfill", "shim", "compatibility", "portable", "intl", "grapheme"],
-    "homepage": "https://symfony.com/",
+    "homepage": "https://symfony.com",
     "license": "MIT",
     "authors": [
         {

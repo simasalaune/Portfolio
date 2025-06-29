@@ -62,7 +62,7 @@ class Admin_Settings {
 			'simply-static-generate',
 			array( $this, 'render_settings' ),
 			SIMPLY_STATIC_URL . '/assets/simply-static-icon.svg',
-            apply_filters( 'ss_menu_position', 100 )
+			apply_filters( 'ss_menu_position', 100 )
 		);
 
 		$generate_suffix = add_submenu_page(
@@ -84,7 +84,8 @@ class Admin_Settings {
 				__( 'Settings', 'simply-static' ),
 				apply_filters( 'ss_user_capability', 'manage_options', 'settings' ),
 				'simply-static-settings',
-				array( $this, 'render_settings' )
+				array( $this, 'render_settings' ),
+				5
 			);
 
 			add_action( "admin_print_scripts-{$settings_suffix}", array( $this, 'add_settings_scripts' ) );
@@ -98,10 +99,38 @@ class Admin_Settings {
 				$this->failed_tests > 0 ? __( 'Diagnostics', 'simply-static' ) . ' ' . wp_kses_post( $notifications ) : __( 'Diagnostics', 'simply-static' ),
 				apply_filters( 'ss_user_capability', 'publish_pages', 'generate' ),
 				'simply-static-diagnostics',
-				array( $this, 'render_settings' )
+				array( $this, 'render_settings' ),
+				10
 			);
 
 			add_action( "admin_print_scripts-{$diagnostics_suffix}", array( $this, 'add_settings_scripts' ) );
+		}
+
+		if ( ! defined( 'SIMPLY_STATIC_PRO_VERSION' ) ) {
+			// Add Simply Static Studio submenu that links to external URL
+			add_submenu_page(
+				'simply-static-generate',
+				__( 'Static Studio', 'simply-static' ),
+				__( 'Static Studio<i class="dashicons dashicons-external" style="font-size:12px;vertical-align:-2px;height:10px;"></i>', 'simply-static' ),
+				apply_filters( 'ss_user_capability', 'publish_pages', 'generate' ),
+				'simply-static-studio',
+				function () {
+					exit;
+				},
+				100
+			);
+
+			// Add JavaScript to open the Studio link in a new tab
+			add_action( 'admin_footer', function () {
+				?>
+                <script type="text/javascript">
+                    jQuery(document).ready(function ($) {
+                        // Find the Simply Static Studio menu item and modify its behavior
+                        $('a[href="admin.php?page=simply-static-studio"]').attr('href', 'https://simplystatic.com/simply-static-studio/').attr('target', '_blank');
+                    });
+                </script>
+				<?php
+			} );
 		}
 	}
 
@@ -138,19 +167,21 @@ class Admin_Settings {
 		$args = apply_filters(
 			'ss_settings_args',
 			array(
-				'screen'         => 'simplystatic-settings',
-				'version'        => SIMPLY_STATIC_VERSION,
-				'logo'           => SIMPLY_STATIC_URL . '/assets/simply-static-logo.svg',
-				'plan'           => 'free',
-				'initial'        => $initial,
-				'home'           => home_url(),
-				'home_path'      => get_home_path(),
-				'admin_email'    => get_bloginfo( 'admin_email' ),
-				'temp_files_dir' => $temp_dir,
-				'blog_id'        => get_current_blog_id(),
-				'need_upgrade'   => 'no',
-				'builds'         => array(),
-				'integrations'   => array_map( function ( $item ) {
+				'screen'          => 'simplystatic-settings',
+				'version'         => SIMPLY_STATIC_VERSION,
+				'logo'            => SIMPLY_STATIC_URL . '/assets/simply-static-logo.svg',
+				'plan'            => 'free',
+				'initial'         => $initial,
+				'home'            => home_url(),
+				'home_path'       => get_home_path(),
+				'admin_email'     => get_bloginfo( 'admin_email' ),
+				'temp_files_dir'  => $temp_dir,
+				'blog_id'         => get_current_blog_id(),
+				'need_upgrade'    => 'no',
+				'builds'          => array(),
+				'hidden_settings' => apply_filters( 'ss_hidden_settings', array() ),
+				'last_export_end' => $options->get( 'archive_end_time' ),
+				'integrations'    => array_map( function ( $item ) {
 					$object = new $item;
 
 					return $object->js_object();
@@ -169,6 +200,10 @@ class Admin_Settings {
 					$args['connect'] = $data['plugin_data']['simply-static-pro']['connectivity_test'];
 				}
 			}
+		}
+
+		if ( defined( 'SSS_VERSION' ) ) {
+			$args['version_studio'] = SSS_VERSION;
 		}
 
 		// Multisite?
@@ -493,7 +528,9 @@ class Admin_Settings {
 				'search_excludable',
 				'iframe_urls',
 				'iframe_custom_css',
-				'whitelist_plugins'
+				'whitelist_plugins',
+				'minify_css_exclude',
+				'minify_js_exclude'
 			];
 
 			$array_fields = [ 'integrations' ];
@@ -507,6 +544,20 @@ class Admin_Settings {
 				} else {
 					// Exclude Basic Auth fields from sanitize.
 					if ( $key === 'http_basic_auth_username' || $key === 'http_basic_auth_password' ) {
+						// If they are empty, also clear $_SERVER['PHP_AUTH_USER'] and $_SERVER['PHP_AUTH_PW']
+						if ( $key === 'http_basic_auth_username' && empty( $value ) ) {
+							if ( isset( $_SERVER['PHP_AUTH_USER'] ) ) {
+								unset( $_SERVER['PHP_AUTH_USER'] );
+							}
+						}
+
+						if ( $key === 'http_basic_auth_password' && empty( $value ) ) {
+							if ( isset( $_SERVER['PHP_AUTH_PW'] ) ) {
+								unset( $_SERVER['PHP_AUTH_PW'] );
+							}
+						}
+
+						// Continue with other options.
 						continue;
 					}
 					$options[ $key ] = sanitize_text_field( $value );
@@ -759,7 +810,7 @@ class Admin_Settings {
 		return json_encode( [
 			'status'  => 200,
 			'running' => Plugin::instance()->get_archive_creation_job()->is_running(),
-            'paused'  => Plugin::instance()->get_archive_creation_job()->is_paused(),
+			'paused'  => Plugin::instance()->get_archive_creation_job()->is_paused(),
 		] );
 	}
 
