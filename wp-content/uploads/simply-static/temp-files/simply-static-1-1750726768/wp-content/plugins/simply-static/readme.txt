@@ -4,7 +4,7 @@ Tags: static site generator, performance, security, jamstack
 Requires at least: 6.2
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag:  3.3.1.2
+Stable tag:  3.3.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,7 +178,7 @@ and much more.
 
 = Get the Pro version =
 
-You can get the pro version [here](https://simplystatic.com/pro/).
+You can get the pro version [here](https://simplystatic.com/pricing/).
 
 = Simply Static Course =
 
@@ -260,6 +260,51 @@ Simply Static creates a static copy of your WordPress site that is intended to b
 3. Diagnostics
 
 == Changelog ==
+
+= 3.3.3.5 =
+
+* fixed typo (placehodler vs. placeholder)
+* better handling for import maps when using offline mode
+* avoid error if empty DOM returned (Yoast SEO integration)
+* improved ZIP URL handling with WP_CONTENT_DIR and WP_CONTENT_URL set
+* use backticks when creating tables to avoid AWS Aurora MySQL
+* exclude robots.txt from .txt exclusion
+* added method to delete single record from DB table
+* preserve URL parameters on export (UTM tags, generic URL parameters, version numbers for JS/CSS)
+
+= 3.3.3.4 =
+
+* preserve JSON inside attributes (Elementor, Cornerstone and others)
+
+= 3.3.3.3 =
+
+* adding a hidden delay integration to auto-pause between exports (disabled by default)
+* refactored UTF-8 handling to properly encode Arabic characters and German Umlauts
+* added support for conditional comments being extracted without modifying the structure
+* improved "feed" and "debug" checks inside exclude handler with regex to avoid false-positives
+* added custom Elementor widget for search
+
+= 3.3.3.2 =
+
+* preserve custom body classes
+
+= 3.3.3.1 =
+
+* Ported SEO extensions to use DomXPath
+
+= 3.3.3 =
+
+* WP HTML API -> DomDocument
+* DomXPath for Dom interactions
+
+= 3.3.2 =
+
+* fixed typo in search settings
+* fixed AIO SEO sitemap parsing
+* improved srcset extraction
+* HTMLDOMParser replaced with WP HTML API
+* improved Basic Auth handling with Ubuntu 24+
+* no more custom UTF-8 handler - PHP 7.4 requires mbstring anyway
 
 = 3.3.1.2 =
 

@@ -100,13 +100,16 @@ class UCEmptyTemplate{
     <link rel="profile" href="https://gmpg.org/xfn/11">
     <?php wp_head(); ?>
     
-    <style>
-    html{
+	<?php
+
+	$css = 'html{
     	margin:0px !important;
     	padding:0px !important;
-    }
-    
-    </style>
+    }';
+
+	UniteProviderFunctionsUC::printCustomStyle($css, true);
+	
+	?>
         
   </head>
   <body <?php body_class(); ?>>
@@ -150,7 +153,7 @@ class UCEmptyTemplate{
 		
 		//$this->renderRegularBody();
 		
-		s_echo($content);
+		uelm_echo($content);
 		
 		$this->renderFooter();
 		
@@ -160,12 +163,7 @@ class UCEmptyTemplate{
 	 * check and output debug
 	 */
 	private function outputDebugScript(){
-		
-		?>
-		
-		<style>
-		
-			.uc-debug-holder{
+		$css = '.uc-debug-holder{
 				display:flex;
 				justify-content:center;
 				padding:10px;
@@ -179,9 +177,11 @@ class UCEmptyTemplate{
 				position:absolute;
 				top:10px;
 				left:10px;
-			}
-			
-		</style>
+			}';
+
+		UniteProviderFunctionsUC::printCustomStyle($css, true);
+
+		?>
 		
 		<div class="uc-debug-holder">
 			
@@ -193,9 +193,8 @@ class UCEmptyTemplate{
 			
 		</div>
 		
-		
-		<script>
-		
+		<script type="text/javasctipt">
+
 			function trace(str){
 				console.log(str);
 			}
@@ -291,9 +290,9 @@ class UCEmptyTemplate{
 			});
 		
 		</script>
-		
+			
 		<?php 
-		
+	
 		return(true);
 	}
 	
@@ -369,7 +368,7 @@ class UCEmptyTemplate{
 		
 		//check debug
 		
-		s_echo($content);
+		uelm_echo($content);
 		
 		$this->renderFooter();
 				
@@ -494,7 +493,7 @@ class UCEmptyTemplate{
 		if($isDebug == true)
 			echo "<div class='uc-debug-templates-wrapper'>";
 		
-		s_echo($content);
+		uelm_echo($content);
 		
 		if($isDebug == true)
 			echo "</div>";
@@ -515,7 +514,7 @@ class UCEmptyTemplate{
 			$success = wp_cache_set( $cacheKey, $content, '', GlobalsUnlimitedElements::FRAME_CACHE_EXPIRE_SECONDS );
 		}
 		
-		s_echo($content);
+		uelm_echo($content);
 	}
 	
 	
@@ -576,3 +575,4 @@ class UCEmptyTemplate{
 }
 
 new UCEmptyTemplate();
+

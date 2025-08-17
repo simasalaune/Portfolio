@@ -1,4 +1,5 @@
-<title>CodeMirror: XML mode</title>
+<!DOCTYPE html>
+<html><head><title>CodeMirror: XML mode</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/docs.css">
 
@@ -6,35 +7,18 @@
 <script src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/lib/codemirror.js"></script>
 <script src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/xml/xml.js"></script>
 <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
-
-
-
-
-
-
-<div id="nav">
-  <a href="http://codemirror.net/"><h1>CodeMirror</h1>
-<img id="logo" src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/logo.png"></a>
+</head><body><div id="nav">
+  <a href="http://codemirror.net/"><h1>CodeMirror</h1><img id="logo" src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/logo.png"></a>
 
   <ul>
-    <li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/index.html">Home</a>
-    </li>
-<li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/manual.html">Manual</a>
-    </li>
-<li>
-<a href="https://github.com/codemirror/codemirror">Code</a>
-  </li>
-</ul>
+    <li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/index.html">Home</a>
+    </li><li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/manual.html">Manual</a>
+    </li><li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </li></ul>
   <ul>
-    <li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/index.html">Language modes</a>
-    </li>
-<li>
-<a class="active" href="#">XML</a>
-  </li>
-</ul>
+    <li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/index.html">Language modes</a>
+    </li><li><a class="active" href="#">XML</a>
+  </li></ul>
 </div>
 
 <article>
@@ -51,10 +35,12 @@
   &lt;/body&gt;
 &lt;/html&gt;
 </textarea></form>
-    <script>var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         mode: "text/html",
         lineNumbers: true
-      });</script>
+      });
+    </script>
     <p>The XML mode supports two configuration parameters:</p>
     <dl>
       <dt><code>htmlMode (boolean)</code></dt>
@@ -68,3 +54,4 @@
 
     <p><strong>MIME types defined:</strong> <code>application/xml</code>, <code>text/html</code>.</p>
   </article>
+</body></html>

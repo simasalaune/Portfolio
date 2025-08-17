@@ -1,9 +1,12 @@
-{% if settings.image.src is not empty %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>{% if settings.image.src is not empty %}
+	{% set id_attribute = settings._cssid is not empty ? 'id=' ~ settings._cssid | e('html_attr') : '' %}	
 	{% if settings.link.href %}
-		<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/elementor/modules/atomic-widgets/elements/atomic-image/{{ settings.link.href | e('full_url') }}" class="{{ base_styles['link-base'] }}" target="{{ settings.link.target }}">
+		<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/elementor/modules/atomic-widgets/elements/atomic-image/%7B%7B%20settings.link.href%20%7D%7D" class="{{ base_styles['link-base'] }}" target="{{ settings.link.target }}">
 	{% endif %}
-	<img class="{{ base_styles['base'] }} {{ settings.classes | join(' ') }}" for attr value in settings.image % if src="https://simasalaune.github.io/Portfolio/wp-content/plugins/elementor/modules/atomic-widgets/elements/atomic-image/{{ value | e('full_url') }}" else | e endif endfor>
+	<img class="{{ base_styles['base'] }} {{ settings.classes | join(' ') }}" id_attribute settings.attributes raw for attr value in settings.image if src="https://simasalaune.github.io/Portfolio/wp-content/plugins/elementor/modules/atomic-widgets/elements/atomic-image/%7B%7B%20value%20%7C%20e('full_url')%20%7D%7D" else e endif endfor>
 	{% if settings.link.href %}
 		</a>
 	{% endif %}
 {% endif %}
+</p></body></html>

@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>CodeMirror: HTML mixed mode</title>
+<html><head><title>CodeMirror: HTML mixed mode</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/docs.css">
 
@@ -14,31 +12,18 @@
 <script src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/vbscript/vbscript.js"></script>
 <script src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/htmlmixed/htmlmixed.js"></script>
 <style>.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
-</head>
-<body>
-<div id="nav">
-  <a href="http://codemirror.net/"><h1>CodeMirror</h1>
-<img id="logo" src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/logo.png"></a>
+</head><body><div id="nav">
+  <a href="http://codemirror.net/"><h1>CodeMirror</h1><img id="logo" src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/logo.png"></a>
 
   <ul>
-    <li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/index.html">Home</a>
-    </li>
-<li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/manual.html">Manual</a>
-    </li>
-<li>
-<a href="https://github.com/codemirror/codemirror">Code</a>
-  </li>
-</ul>
+    <li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/index.html">Home</a>
+    </li><li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/manual.html">Manual</a>
+    </li><li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </li></ul>
   <ul>
-    <li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/index.html">Language modes</a>
-    </li>
-<li>
-<a class="active" href="#">HTML mixed</a>
-  </li>
-</ul>
+    <li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/index.html">Language modes</a>
+    </li><li><a class="active" href="#">HTML mixed</a>
+  </li></ul>
 </div>
 
 <article>
@@ -48,22 +33,27 @@
   <!-- this is a comment -->
   
     <title>Mixed HTML Example</title>
-    <style type="text/css">h1 {font-family: comic sans; color: #f0f;}
+    <style type="text/css">
+      h1 {font-family: comic sans; color: #f0f;}
       div {background: yellow !important;}
       body {
         max-width: 50em;
         margin: 1em 2em 1em 5em;
-      }</style>
+      }
+    </style>
   
   
     <h1>Mixed HTML Example</h1>
-    <script>function jsFunc(arg1, arg2) {
+    <script>
+      function jsFunc(arg1, arg2) {
         if (arg1 && arg2) document.body.innerHTML = "achoo";
-      }</script>
+      }
+    </script>
   
 
 </textarea></form>
-    <script>// Define an extended mixed-mode that understands vbscript and
+    <script>
+      // Define an extended mixed-mode that understands vbscript and
       // leaves mustache/handlebars embedded templates in html mode
       var mixedMode = {
         name: "htmlmixed",
@@ -75,13 +65,14 @@
       var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         mode: mixedMode,
         selectionPointer: true
-      });</script>
+      });
+    </script>
 
     <p>The HTML mixed mode depends on the XML, JavaScript, and CSS modes.</p>
 
     <p>It takes an optional mode configuration
     option, <code>scriptTypes</code>, which can be used to add custom
-    behavior for specific <code>&lt;script type="..."></code> tags. If
+    behavior for specific <code>&lt;script type="..."&gt;</code> tags. If
     given, it should hold an array of <code>{matches, mode}</code>
     objects, where <code>matches</code> is a string or regexp that
     matches the script type, and <code>mode</code> is
@@ -95,5 +86,4 @@
     XML parser).</p>
 
   </article>
-</body>
-</html>
+</body></html>

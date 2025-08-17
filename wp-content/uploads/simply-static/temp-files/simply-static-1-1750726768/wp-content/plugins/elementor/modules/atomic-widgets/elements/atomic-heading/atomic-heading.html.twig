@@ -1,11 +1,14 @@
-{% if settings.title is not empty %}
-	<{{ settings.tag | e('html_tag') }} class="{{ settings.classes | merge( [ base_styles.base ] ) | join(' ') }}">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>{% if settings.title is not empty %}
+	{% set id_attribute = settings._cssid is not empty ? 'id=' ~ settings._cssid | e('html_attr') : '' %}
+	&lt;{{ settings.tag | e('html_tag') }} class="{{ settings.classes | merge( [ base_styles.base ] ) | join(' ') }}" {{ id_attribute }} {{ settings.attributes | raw }}&gt;
 	{% if settings.link.href %}
-		<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/elementor/modules/atomic-widgets/elements/atomic-heading/{{ settings.link.href | e('full_url') }}" target="{{ settings.link.target }}" class="{{ base_styles['link-base'] }}">
+		<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/elementor/modules/atomic-widgets/elements/atomic-heading/%7B%7B%20settings.link.href%20%7D%7D" target="{{ settings.link.target }}" class="{{ base_styles['link-base'] }}">
 			{{ settings.title }}
 		</a>
 	{% else %}
 		{{ settings.title }}
 	{% endif %}
-	{{ settings.tag | e('html_tag') }}>
+	{{ settings.tag | e('html_tag') }}&gt;
 {% endif %}
+</p></body></html>

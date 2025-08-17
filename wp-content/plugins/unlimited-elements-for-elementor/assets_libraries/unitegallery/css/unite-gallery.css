@@ -104,7 +104,7 @@
 	height:35px;
 	width:32px;
 	height:32px;
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader_skype_trans.gif');
+	background-image:url('../images/loader_skype_trans.gif');
 	background-repeat:no-repeat;
 }
 
@@ -160,78 +160,78 @@
 .ug-slider-preloader.ug-loader1{
 	width:30px;
 	height:30px;
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-white1.gif');
+	background-image:url('../images/loader-white1.gif');
 }
 
 .ug-slider-preloader.ug-loader1.ug-loader-black{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-black1.gif');	
+	background-image:url('../images/loader-black1.gif');	
 }
 
 .ug-slider-preloader.ug-loader2{
 	width:32px;
 	height:32px;
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-white2.gif');
+	background-image:url('../images/loader-white2.gif');
 }
 
 .ug-slider-preloader.ug-loader2.ug-loader-black{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-black2.gif');	
+	background-image:url('../images/loader-black2.gif');	
 }
 
 .ug-slider-preloader.ug-loader3{
 	width:38px;
 	height:38px;
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-white3.gif');
+	background-image:url('../images/loader-white3.gif');
 }
 
 .ug-slider-preloader.ug-loader3.ug-loader-black{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-black3.gif');	
+	background-image:url('../images/loader-black3.gif');	
 }
 
 .ug-slider-preloader.ug-loader4{
 	width:32px;
 	height:32px;
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-white4.gif');
+	background-image:url('../images/loader-white4.gif');
 	background-color:white;
 }
 
 .ug-slider-preloader.ug-loader4.ug-loader-black{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-black4.gif');	
+	background-image:url('../images/loader-black4.gif');	
 }
 
 .ug-slider-preloader.ug-loader5{
 	width:60px;
 	height:8px;
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-white5.gif');
+	background-image:url('../images/loader-white5.gif');
 	background-color:white;
 	border:none;
 	border-radius:0px;
 }
 
 .ug-slider-preloader.ug-loader5.ug-loader-black{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-black5.gif');
+	background-image:url('../images/loader-black5.gif');
 	border:2px solid #000000;
 }
 
 .ug-slider-preloader.ug-loader6{
 	width:32px;
 	height:32px;
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-white6.gif');
+	background-image:url('../images/loader-white6.gif');
 }
 
 .ug-slider-preloader.ug-loader6.ug-loader-black{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-black6.gif');	
+	background-image:url('../images/loader-black6.gif');	
 }
 
 .ug-slider-preloader.ug-loader7{
 	width:32px;
 	height:10px;
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-white7.gif');
+	background-image:url('../images/loader-white7.gif');
 	border-width:3px;
 	border-radius:3px;
 }
 
 .ug-slider-preloader.ug-loader7.ug-loader-black{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-black7.gif');	
+	background-image:url('../images/loader-black7.gif');	
 }
 
 .ug-slider-preloader.ug-loader-black{
@@ -290,7 +290,7 @@
 	position:absolute;
 	z-index:100;	
 	background-color:#000000;
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-black1.gif');	
+	background-image:url('../images/loader-black1.gif');	
 	background-repeat:no-repeat;
 	background-position:center center;
 	box-sizing:border-box;
@@ -301,7 +301,7 @@
 	width:100%;
 	height:100%;
 	background-color:#000000;
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader-black1.gif');	
+	background-image:url('../images/loader-black1.gif');	
 	background-repeat:no-repeat;
 	background-position:center center;
 }
@@ -483,15 +483,15 @@
 }
 
 .ug-thumb-wrapper.ug-thumb-generated .ug-thumb-loader-dark{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader.gif');
+	background-image:url('../images/loader.gif');
 }
 
 .ug-thumb-wrapper.ug-thumb-generated .ug-thumb-loader-bright{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/loader_bright.gif');
+	background-image:url('../images/loader_bright.gif');
 }
 
 .ug-thumb-wrapper.ug-thumb-generated .ug-thumb-error{
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/not_loaded.png');
+	background-image:url('../images/not_loaded.png');
 }
 
 .ug-thumb-wrapper.ug-thumb-generated img{
@@ -720,7 +720,7 @@ img.ug-sepia-effect{
 	background-color:#000000;
 	opacity: 0.3;
 	filter: alpha(opacity=30);	
-	background-image:url('https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/assets_libraries/unitegallery/images/cover-grid.png');
+	background-image:url('../images/cover-grid.png');
 }
 
 

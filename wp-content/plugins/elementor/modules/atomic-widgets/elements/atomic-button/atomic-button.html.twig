@@ -1,13 +1,15 @@
-{% if settings.text is not empty %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>{% if settings.text is not empty %}
     {% set classes = settings.classes | merge( [ base_styles.base ] ) | join(' ') %}
-
+	{% set id_attribute = settings._cssid is not empty ? 'id=' ~ settings._cssid | e('html_attr') : '' %}
     {% if settings.link.href %}
-        <a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/elementor/modules/atomic-widgets/elements/atomic-button/{{ settings.link.href | e('full_url') }}" target="{{ settings.link.target }}" class="{{ classes }}">
+        <a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/elementor/modules/atomic-widgets/elements/atomic-button/%7B%7B%20settings.link.href%20%7D%7D" target="{{ settings.link.target }}" class="{{ classes }}" id_attribute settings.attributes raw>
             {{ settings.text }}
         </a>
     {% else %}
-        <button class="{{ classes }}">
+        <button class="{{ classes }}" id_attribute settings.attributes raw>
             {{ settings.text }}
         </button>
     {% endif %}
 {% endif %}
+</p></body></html>

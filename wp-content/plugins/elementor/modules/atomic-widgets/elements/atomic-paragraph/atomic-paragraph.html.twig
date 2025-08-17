@@ -1,13 +1,14 @@
-<p>{% if settings.paragraph is not empty %}
-        
-</p>
-<p class="{{ settings.classes | merge( [ base_styles.base ] ) | join(' ') }}">
-            {% if settings.link.href %}
-                <a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/elementor/modules/atomic-widgets/elements/atomic-paragraph/{{ settings.link.href | e('full_url') }}" target="{{ settings.link.target }}" class="{{ base_styles['link-base'] }}">
-                    {{ settings.paragraph }}
-                </a>
-            {% else %}
-                {{ settings.paragraph }}
-            {% endif %}
-        
-{% endif %}</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body><p>{% if settings.paragraph is not empty %}
+	{% set id_attribute = settings._cssid is not empty ? 'id=' ~ settings._cssid | e('html_attr') : '' %}
+		</p><p class="{{ settings.classes | merge( [ base_styles.base ] ) | join(' ') }}" id_attribute settings.attributes raw>
+				{% if settings.link.href %}
+						<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/elementor/modules/atomic-widgets/elements/atomic-paragraph/%7B%7B%20settings.link.href%20%7D%7D" target="{{ settings.link.target }}" class="{{ base_styles['link-base'] }}">
+								{{ settings.paragraph }}
+						</a>
+				{% else %}
+						{{ settings.paragraph }}
+				{% endif %}
+		</p>
+{% endif %}
+</body></html>

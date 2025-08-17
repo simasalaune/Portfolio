@@ -1,4 +1,5 @@
-<title>CodeMirror: CSS mode</title>
+<!DOCTYPE html>
+<html><head><title>CodeMirror: CSS mode</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/docs.css">
 
@@ -9,35 +10,18 @@
 <script src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/addon/hint/show-hint.js"></script>
 <script src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/addon/hint/css-hint.js"></script>
 <style>.CodeMirror {background: #f8f8f8;}</style>
-
-
-
-
-
-
-<div id="nav">
-  <a href="http://codemirror.net/"><h1>CodeMirror</h1>
-<img id="logo" src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/logo.png"></a>
+</head><body><div id="nav">
+  <a href="http://codemirror.net/"><h1>CodeMirror</h1><img id="logo" src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/logo.png"></a>
 
   <ul>
-    <li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/index.html">Home</a>
-    </li>
-<li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/manual.html">Manual</a>
-    </li>
-<li>
-<a href="https://github.com/codemirror/codemirror">Code</a>
-  </li>
-</ul>
+    <li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/index.html">Home</a>
+    </li><li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/manual.html">Manual</a>
+    </li><li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </li></ul>
   <ul>
-    <li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/index.html">Language modes</a>
-    </li>
-<li>
-<a class="active" href="#">CSS</a>
-  </li>
-</ul>
+    <li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/index.html">Language modes</a>
+    </li><li><a class="active" href="#">CSS</a>
+  </li></ul>
 </div>
 
 <article>
@@ -77,12 +61,15 @@ code {
   color: #418A8A;
 }
 </textarea></form>
-    <script>var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         extraKeys: {"Ctrl-Space": "autocomplete"},
-      });</script>
+      });
+    </script>
 
     <p><strong>MIME types defined:</strong> <code>text/css</code>, <code>text/x-scss</code> (<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/css/scss.html">demo</a>), <code>text/x-less</code> (<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/css/less.html">demo</a>).</p>
 
     <p><strong>Parsing/Highlighting Tests:</strong> <a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/test/index.html#css_*">normal</a>,  <a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/test/index.html#verbose,css_*">verbose</a>.</p>
 
   </article>
+</body></html>

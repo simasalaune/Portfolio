@@ -676,7 +676,7 @@ class UniteCreatorElementorIntegrate{
 		<div class="unlimited-elements-background-overlay<?php echo esc_attr($addClass)?>" data-forid="<?php echo esc_attr($elementID)?>" data-location="<?php echo esc_attr($location);?>" style="display:none">
 			<template>
 			<?php 
-			s_echo($html);
+			uelm_echo($html);
 			?>
 			</template>
 		</div>

@@ -1,4 +1,5 @@
-<title>CodeMirror: JavaScript mode</title>
+<!DOCTYPE html>
+<html><head><title>CodeMirror: JavaScript mode</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/docs.css">
 
@@ -9,35 +10,18 @@
 <script src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/addon/comment/comment.js"></script>
 <script src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/javascript/javascript.js"></script>
 <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
-
-
-
-
-
-
-<div id="nav">
-  <a href="http://codemirror.net/"><h1>CodeMirror</h1>
-<img id="logo" src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/logo.png"></a>
+</head><body><div id="nav">
+  <a href="http://codemirror.net/"><h1>CodeMirror</h1><img id="logo" src="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/logo.png"></a>
 
   <ul>
-    <li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/index.html">Home</a>
-    </li>
-<li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/manual.html">Manual</a>
-    </li>
-<li>
-<a href="https://github.com/codemirror/codemirror">Code</a>
-  </li>
-</ul>
+    <li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/index.html">Home</a>
+    </li><li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/doc/manual.html">Manual</a>
+    </li><li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </li></ul>
   <ul>
-    <li>
-<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/index.html">Language modes</a>
-    </li>
-<li>
-<a class="active" href="#">JavaScript</a>
-  </li>
-</ul>
+    <li><a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/index.html">Language modes</a>
+    </li><li><a class="active" href="#">JavaScript</a>
+  </li></ul>
 </div>
 
 <article>
@@ -53,7 +37,7 @@ function StringStream(string) {
 }
 
 StringStream.prototype = {
-  done: function() {return this.pos >= this.string.length;},
+  done: function() {return this.pos &gt;= this.string.length;},
   peek: function() {return this.string.charAt(this.pos);},
   next: function() {
     if (this.pos &lt; this.string.length)
@@ -68,7 +52,7 @@ StringStream.prototype = {
   eatWhile: function(match) {
     var start = this.pos;
     while (this.eat(match));
-    if (this.pos > start) return this.string.slice(start, this.pos);
+    if (this.pos &gt; start) return this.string.slice(start, this.pos);
   },
   backUp: function(n) {this.pos -= n;},
   column: function() {return this.pos;},
@@ -94,34 +78,30 @@ StringStream.prototype = {
 };
 </textarea></div>
 
-    <script>var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         lineNumbers: true,
         matchBrackets: true,
         continueComments: "Enter",
         extraKeys: {"Ctrl-Q": "toggleComment"}
-      });</script>
+      });
+    </script>
 
     <p>
       JavaScript mode supports several configuration options:
-      </p>
-<ul>
-        <li>
-<code>json</code> which will set the mode to expect JSON
+      </p><ul>
+        <li><code>json</code> which will set the mode to expect JSON
         data rather than a JavaScript program.</li>
-        <li>
-<code>jsonld</code> which will set the mode to expect
+        <li><code>jsonld</code> which will set the mode to expect
         <a href="http://json-ld.org/">JSON-LD</a> linked data rather
         than a JavaScript program (<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/javascript/json-ld.html">demo</a>).</li>
-        <li>
-<code>typescript</code> which will activate additional
+        <li><code>typescript</code> which will activate additional
         syntax highlighting and some other things for TypeScript code
         (<a href="https://simasalaune.github.io/Portfolio/wp-content/plugins/unlimited-elements-for-elementor/js/codemirror-custom/mode/javascript/typescript.html">demo</a>).</li>
-        <li>
-<code>statementIndent</code> which (given a number) will
+        <li><code>statementIndent</code> which (given a number) will
         determine the amount of indentation to use for statements
         continued on a new line.</li>
-        <li>
-<code>wordCharacters</code>, a regexp that indicates which
+        <li><code>wordCharacters</code>, a regexp that indicates which
         characters should be considered part of an identifier.
         Defaults to <code>/[\w$]/</code>, which does not handle
         non-ASCII identifiers. Can be set to something more elaborate
@@ -131,3 +111,4 @@ StringStream.prototype = {
 
     <p><strong>MIME types defined:</strong> <code>text/javascript</code>, <code>application/json</code>, <code>application/ld+json</code>, <code>text/typescript</code>, <code>application/typescript</code>.</p>
   </article>
+</body></html>
